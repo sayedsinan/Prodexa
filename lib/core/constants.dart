@@ -27,7 +27,7 @@ class AppConstants {
   static const double smallPadding = 8.0;
   static const double borderRadius = 12.0;
   static const double cardElevation = 2.0;
-  
+
   // Priority levels
   static const List<String> priorityLevels = ['High', 'Medium', 'Low'];
   
