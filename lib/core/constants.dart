@@ -9,8 +9,7 @@ class AppConstants {
   static const String usersEndpoint = '/users';
   static const String todosEndpoint = '/todos';
 
-  // Remove the apiKey - reqres.in doesn't need it
-  // static const String apiKey = 'reqres-free-v1';
+
   
   // Local Storage Keys
   static const String tokenKey = 'auth_token';
