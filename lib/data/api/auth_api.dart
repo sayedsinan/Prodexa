@@ -1,20 +1,44 @@
-import 'api_client.dart';
+// data/api/auth_api.dart
+import '../api/api_client.dart';
+import '../../domain/models/user_model.dart';
 import '../../core/constants.dart';
 
-class AuthApi extends ApiClient {
-  Future<Map<String, dynamic>> login(String email, String password) async {
-    final response = await dio.post(
-      "${AppConstants.baseUrlReqres}/login",
-      data: {"email": email, "password": password},
+class AuthApi {
+  final ApiClient _apiClient;
+
+  AuthApi(this._apiClient);
+
+  Future<Map<String, dynamic>> login({
+    required String email,
+    required String password,
+  }) async {
+    final response = await _apiClient.post(
+      AppConstants.loginEndpoint,
+      
+      data: {
+        'email': email,
+        'password': password,
+      },
     );
-    return response.data;
+    return response.data as Map<String, dynamic>;
   }
 
-  Future<Map<String, dynamic>> register(String email, String password) async {
-    final response = await dio.post(
-      "${AppConstants.baseUrlReqres}/register",
-      data: {"email": email, "password": password},
+  Future<Map<String, dynamic>> register({
+    required String email,
+    required String password,
+  }) async {
+    final response = await _apiClient.post(
+      AppConstants.registerEndpoint,
+      data: {
+        'email': email,
+        'password': password,
+      },
     );
-    return response.data;
+    return response.data as Map<String, dynamic>;
+  }
+
+  Future<UserModel> getCurrentUser(int userId) async {
+    final response = await _apiClient.get('${AppConstants.usersEndpoint}/$userId');
+    return UserModel.fromJson(response.data['data']);
   }
 }

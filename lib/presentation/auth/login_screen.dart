@@ -1,33 +1,128 @@
+// presentation/auth/login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'auth_controller.dart';
+import '../../core/app_routes.dart';
+import '../../core/constants.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/custom_input.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(AuthController());
-    final emailCtrl = TextEditingController(text: "eve.holt@reqres.in");
-    final passCtrl = TextEditingController(text: "cityslicka");
-
+    final controller = Get.find<AuthController>();
+    
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(controller: emailCtrl, decoration: const InputDecoration(labelText: "Email")),
-            const SizedBox(height: 10),
-            TextField(controller: passCtrl, decoration: const InputDecoration(labelText: "Password"), obscureText: true),
-            const SizedBox(height: 20),
-            Obx(() => controller.isLoading.value
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: () => controller.login(emailCtrl.text, passCtrl.text),
-                    child: const Text("Login"),
-                  )),
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(AppConstants.defaultPadding),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 60),
+                      
+                      // Logo and Title
+                      Column(
+                        children: [
+                          Icon(
+                            Icons.task_alt,
+                            size: 80,
+                            color: Theme.of(context).primaryColor,
+                          ).animate().scale(duration: 600.ms),
+                          
+                          const SizedBox(height: 16),
+                          
+                          Text(
+                            'Welcome Back!',
+                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ).animate().slideY(begin: 1, duration: 600.ms),
+                          
+                          const SizedBox(height: 8),
+                          
+                          Text(
+                            'Sign in to continue',
+                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Colors.grey[600],
+                            ),
+                          ).animate().slideY(begin: 1, duration: 800.ms),
+                        ],
+                      ),
+                      
+                      const SizedBox(height: 48),
+                      
+                      // Login Form
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          CustomInput(
+                            controller: controller.emailController,
+                            label: 'Email',
+                            keyboardType: TextInputType.emailAddress,
+                            prefixIcon: Icons.email_outlined,
+                          ).animate().slideX(begin: -1, duration: 600.ms),
+                          
+                          const SizedBox(height: 16),
+                          
+                          CustomInput(
+                            controller: controller.passwordController,
+                            label: 'Password',
+                            obscureText: true,
+                            prefixIcon: Icons.lock_outlined,
+                          ).animate().slideX(begin: 1, duration: 600.ms),
+                          
+                          const SizedBox(height: 8),
+                          
+                          // Demo credentials button
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: controller.fillDemoCredentials,
+                              child: const Text('Use Demo Credentials'),
+                            ),
+                          ).animate().fadeIn(delay: 800.ms),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // Login Button
+                          Obx(() => CustomButton(
+                            onPressed: controller.isLoading ? null : controller.login,
+                            isLoading: controller.isLoading,
+                            text: 'Sign In',
+                          )).animate().scale(delay: 600.ms),
+                          
+                          const SizedBox(height: 16),
+                          
+                          // Register Link
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Don't have an account? ",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              TextButton(
+                                onPressed: () => Get.toNamed(AppRoutes.register),
+                                child: const Text('Sign Up'),
+                              ),
+                            ],
+                          ).animate().fadeIn(delay: 1000.ms),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
