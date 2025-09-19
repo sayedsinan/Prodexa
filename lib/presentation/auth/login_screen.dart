@@ -1,4 +1,3 @@
-// presentation/auth/login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -14,7 +13,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<AuthController>();
-    
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -27,8 +26,6 @@ class LoginScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 60),
-                      
-                      // Logo and Title
                       Column(
                         children: [
                           Icon(
@@ -36,30 +33,27 @@ class LoginScreen extends StatelessWidget {
                             size: 80,
                             color: Theme.of(context).primaryColor,
                           ).animate().scale(duration: 600.ms),
-                          
                           const SizedBox(height: 16),
-                          
                           Text(
                             'Welcome Back!',
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ).animate().slideY(begin: 1, duration: 600.ms),
-                          
                           const SizedBox(height: 8),
-                          
                           Text(
                             'Sign in to continue',
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Colors.grey[600],
-                            ),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      color: Colors.grey[600],
+                                    ),
                           ).animate().slideY(begin: 1, duration: 800.ms),
                         ],
                       ),
-                      
                       const SizedBox(height: 48),
-                      
-                      // Login Form
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -69,19 +63,14 @@ class LoginScreen extends StatelessWidget {
                             keyboardType: TextInputType.emailAddress,
                             prefixIcon: Icons.email_outlined,
                           ).animate().slideX(begin: -1, duration: 600.ms),
-                          
                           const SizedBox(height: 16),
-                          
                           CustomInput(
                             controller: controller.passwordController,
                             label: 'Password',
                             obscureText: true,
                             prefixIcon: Icons.lock_outlined,
                           ).animate().slideX(begin: 1, duration: 600.ms),
-                          
                           const SizedBox(height: 8),
-                          
-                          // Demo credentials button
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
@@ -89,19 +78,15 @@ class LoginScreen extends StatelessWidget {
                               child: const Text('Use Demo Credentials'),
                             ),
                           ).animate().fadeIn(delay: 800.ms),
-                          
                           const SizedBox(height: 24),
-                          
-                          // Login Button
                           Obx(() => CustomButton(
-                            onPressed: controller.isLoading ? null : controller.login,
-                            isLoading: controller.isLoading,
-                            text: 'Sign In',
-                          )).animate().scale(delay: 600.ms),
-                          
+                                onPressed: controller.isLoading
+                                    ? null
+                                    : controller.login,
+                                isLoading: controller.isLoading,
+                                text: 'Sign In',
+                              )).animate().scale(delay: 600.ms),
                           const SizedBox(height: 16),
-                          
-                          // Register Link
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -110,7 +95,8 @@ class LoginScreen extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               TextButton(
-                                onPressed: () => Get.toNamed(AppRoutes.register),
+                                onPressed: () =>
+                                    Get.toNamed(AppRoutes.register),
                                 child: const Text('Sign Up'),
                               ),
                             ],

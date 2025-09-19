@@ -5,7 +5,7 @@ import '../api/api_client.dart';
 import '../api/task_api.dart';
 import '../local/hive_service.dart';
 import '../local/db_helper.dart';
-import '../../core/constants.dart';
+// import '../../core/constants.dart';
 
 class TaskRepositoryImpl implements ITaskRepository {
   final TaskApi _taskApi;
@@ -22,19 +22,18 @@ class TaskRepositoryImpl implements ITaskRepository {
       }
 
       try {
-        // Fetch from API
+  
         final tasks = await _taskApi.getTasks();
         
-        // Transform API data to include our custom fields
         final enhancedTasks = tasks.map((task) => task.copyWith(
           description: task.description.isNotEmpty ? task.description : task.title,
-          priority: 'Medium', // Default priority
+          priority: 'Medium',
           status: task.completed ? 'Done' : 'To-Do',
           createdAt: DateTime.now().subtract(Duration(days: task.id % 30)),
           updatedAt: DateTime.now(),
         )).toList();
 
-        // Cache locally
+  
         await DbHelper.saveTasksWithErrorHandling(enhancedTasks);
         
         _logger.i('Fetched ${enhancedTasks.length} tasks from API');
@@ -83,8 +82,6 @@ class TaskRepositoryImpl implements ITaskRepository {
           _logger.w('API fetch failed for task $id: $e');
         }
       }
-
-      // Fallback to local
       final localTask = HiveService.getTask(id);
       if (localTask != null) {
         return localTask;
@@ -105,7 +102,7 @@ class TaskRepositoryImpl implements ITaskRepository {
       if (await _apiClient.hasNetworkConnection()) {
         try {
           createdTask = await _taskApi.createTask(task);
-          // API might return a different structure, so enhance it
+        
           createdTask = createdTask.copyWith(
             title: task.title,
             description: task.description,
@@ -118,7 +115,7 @@ class TaskRepositoryImpl implements ITaskRepository {
           );
         } catch (e) {
           _logger.w('API create failed, creating locally: $e');
-          // Create locally with a unique ID
+ 
           final localTasks = HiveService.getTasks();
           final maxId = localTasks.isEmpty ? 0 : localTasks.map((t) => t.id).reduce((a, b) => a > b ? a : b);
           createdTask = task.copyWith(
@@ -128,7 +125,7 @@ class TaskRepositoryImpl implements ITaskRepository {
           );
         }
       } else {
-        // Offline creation
+
         final localTasks = HiveService.getTasks();
         final maxId = localTasks.isEmpty ? 0 : localTasks.map((t) => t.id).reduce((a, b) => a > b ? a : b);
         createdTask = task.copyWith(
@@ -155,7 +152,7 @@ class TaskRepositoryImpl implements ITaskRepository {
       if (await _apiClient.hasNetworkConnection()) {
         try {
           updatedTask = await _taskApi.updateTask(updatedTask);
-          // Ensure our custom fields are preserved
+          
           updatedTask = updatedTask.copyWith(
             title: task.title,
             description: task.description,

@@ -31,8 +31,7 @@ class AppTheme {
     ),
     scaffoldBackgroundColor: backgroundLight,
     fontFamily: 'Poppins',
-    
-    // AppBar Theme
+
     appBarTheme: const AppBarTheme(
       elevation: 0,
       centerTitle: true,
@@ -46,7 +45,6 @@ class AppTheme {
       ),
     ),
     
-    // Card Theme
     cardTheme: CardThemeData(
       elevation: AppConstants.cardElevation,
       shape: RoundedRectangleBorder(
@@ -54,8 +52,7 @@ class AppTheme {
       ),
       margin: const EdgeInsets.all(AppConstants.smallPadding),
     ),
-    
-    // Input Decoration Theme
+
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: surfaceColor,
@@ -76,8 +73,7 @@ class AppTheme {
         vertical: AppConstants.defaultPadding,
       ),
     ),
-    
-    // Elevated Button Theme
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         elevation: 2,
@@ -96,7 +92,7 @@ class AppTheme {
       ),
     ),
     
-    // Text Button Theme
+
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         padding: const EdgeInsets.symmetric(
@@ -113,8 +109,7 @@ class AppTheme {
         ),
       ),
     ),
-    
-    // FloatingActionButton Theme
+
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       elevation: 4,
       highlightElevation: 8,
@@ -131,8 +126,6 @@ class AppTheme {
     ),
     scaffoldBackgroundColor: backgroundDark,
     fontFamily: 'Poppins',
-    
-    // AppBar Theme
     appBarTheme: const AppBarTheme(
       elevation: 0,
       centerTitle: true,
@@ -146,7 +139,7 @@ class AppTheme {
       ),
     ),
     
-    // Card Theme
+
     cardTheme: CardThemeData(
       elevation: AppConstants.cardElevation,
       shape: RoundedRectangleBorder(
@@ -154,11 +147,10 @@ class AppTheme {
       ),
       margin: const EdgeInsets.all(AppConstants.smallPadding),
     ),
-    
-    // Similar styling as light theme but with dark colors...
+
   );
 
-  // Utility methods for priority colors
+
   static Color getPriorityColor(String priority) {
     switch (priority.toLowerCase()) {
       case 'high':
@@ -172,7 +164,7 @@ class AppTheme {
     }
   }
 
-  // Utility methods for status colors
+
   static Color getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'to-do':

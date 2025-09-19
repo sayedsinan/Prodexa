@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'task_controller.dart';
-import '../users/user_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_input.dart';
 import '../users/user_dropdown.dart';
@@ -16,7 +15,7 @@ class TaskFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final taskController = Get.find<TaskController>();
-    final userController = Get.find<UserController>();
+    
 
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +34,6 @@ class TaskFormScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Title Field
             CustomInput(
               controller: taskController.titleController,
               label: 'Task Title *',
@@ -44,7 +42,6 @@ class TaskFormScreen extends StatelessWidget {
             
             const SizedBox(height: 16),
             
-            // Description Field
             CustomInput(
               controller: taskController.descriptionController,
               label: 'Description *',
@@ -54,7 +51,6 @@ class TaskFormScreen extends StatelessWidget {
             
             const SizedBox(height: 16),
             
-            // Due Date Field
             CustomInput(
               controller: taskController.dueDateController,
               label: 'Due Date',
@@ -66,7 +62,6 @@ class TaskFormScreen extends StatelessWidget {
             
             const SizedBox(height: 16),
             
-            // Priority Dropdown
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -101,7 +96,6 @@ class TaskFormScreen extends StatelessWidget {
             
             const SizedBox(height: 16),
             
-            // Status Dropdown
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -136,7 +130,6 @@ class TaskFormScreen extends StatelessWidget {
             
             const SizedBox(height: 16),
             
-            // Assigned User Dropdown
             Obx(() => UserDropdown(
               selectedUserId: taskController.selectedUserId.value,
               onChanged: (userId) => taskController.selectedUserId.value = userId,
@@ -144,7 +137,6 @@ class TaskFormScreen extends StatelessWidget {
             
             const SizedBox(height: 32),
             
-            // Action Buttons
             Obx(() => CustomButton(
               onPressed: taskController.isLoading 
                   ? null 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'core/app_routes.dart';
 import 'core/app_theme.dart';
 import 'data/local/hive_service.dart';

@@ -1,4 +1,3 @@
-// data/local/db_helper.dart
 import 'dart:async';
 import 'package:logger/logger.dart';
 import '../../domain/models/task_model.dart';
@@ -8,7 +7,7 @@ import 'hive_service.dart';
 class DbHelper {
   static final Logger _logger = Logger();
 
-  // Task operations with error handling
+  
   static Future<bool> saveTasksWithErrorHandling(List<TaskModel> tasks) async {
     try {
       await HiveService.saveTasks(tasks);
@@ -42,7 +41,7 @@ class DbHelper {
     }
   }
 
-  // User operations with error handling
+
   static Future<bool> saveUsersWithErrorHandling(List<UserModel> users) async {
     try {
       await HiveService.saveUsers(users);
@@ -54,7 +53,6 @@ class DbHelper {
     }
   }
 
-  // Search and filter operations
   static List<TaskModel> searchTasks(String query) {
     try {
       final tasks = HiveService.getTasks();
@@ -121,7 +119,6 @@ class DbHelper {
     }
   }
 
-  // Statistics
   static Map<String, int> getTaskStatistics() {
     try {
       final tasks = HiveService.getTasks();

@@ -10,17 +10,14 @@ class AuthController extends GetxController {
 
   AuthController(this._authRepository);
 
-  // Observable variables
   final _isLoading = false.obs;
   final _isLoggedIn = false.obs;
   final _currentUser = Rxn<UserModel>();
 
-  // Form controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  // Getters
   bool get isLoading => _isLoading.value;
   bool get isLoggedIn => _isLoggedIn.value;
   UserModel? get currentUser => _currentUser.value;
@@ -31,13 +28,6 @@ class AuthController extends GetxController {
     checkAuthStatus();
   }
 
-  // @override
-  // void onClose() {
-  //   emailController.dispose();
-  //   passwordController.dispose();
-  //   confirmPasswordController.dispose();
-  //   super.onClose();
-  // }
 
   Future<void> checkAuthStatus() async {
     try {
@@ -199,7 +189,7 @@ class AuthController extends GetxController {
 
   void fillDemoCredentials() {
     emailController.text = AppConstants.defaultEmail;
-    passwordController.text = 'password123';
-    confirmPasswordController.text = 'password123';
+    passwordController.text = 'pistol';
+    confirmPasswordController.text = 'pistol';
   }
 }

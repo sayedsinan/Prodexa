@@ -10,10 +10,10 @@ class HiveService {
   static late SharedPreferences _prefs;
 
   static Future<void> init() async {
-    // Initialize SharedPreferences
+    
     _prefs = await SharedPreferences.getInstance();
     
-    // Register adapters
+
     if (!Hive.isAdapterRegistered(0)) {
       Hive.registerAdapter(UserModelAdapter());
     }
@@ -21,12 +21,11 @@ class HiveService {
       Hive.registerAdapter(TaskModelAdapter());
     }
 
-    // Open boxes
     _tasksBox = await Hive.openBox<TaskModel>(AppConstants.tasksBoxKey);
     _usersBox = await Hive.openBox<UserModel>(AppConstants.usersBoxKey);
   }
 
-  // Task operations
+
   static Future<void> saveTasks(List<TaskModel> tasks) async {
     await _tasksBox.clear();
     for (final task in tasks) {
@@ -54,7 +53,6 @@ class HiveService {
     await _tasksBox.clear();
   }
 
-  // User operations
   static Future<void> saveUsers(List<UserModel> users) async {
     await _usersBox.clear();
     for (final user in users) {
@@ -78,7 +76,7 @@ class HiveService {
     await _usersBox.clear();
   }
 
-  // Auth token operations
+   
   static Future<void> saveToken(String token) async {
     await _prefs.setString(AppConstants.tokenKey, token);
   }
@@ -91,7 +89,6 @@ class HiveService {
     await _prefs.remove(AppConstants.tokenKey);
   }
 
-  // User data operations
   static Future<void> saveUserData(UserModel user) async {
     final userData = user.toJson();
     for (final entry in userData.entries) {

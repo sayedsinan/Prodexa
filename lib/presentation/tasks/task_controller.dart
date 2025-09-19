@@ -10,7 +10,6 @@ class TaskController extends GetxController {
 
   TaskController(this._taskRepository);
 
-  // Observable variables
   final _isLoading = false.obs;
   final _tasks = <TaskModel>[].obs;
   final _filteredTasks = <TaskModel>[].obs;
@@ -20,7 +19,6 @@ class TaskController extends GetxController {
   final _selectedPriority = 'All'.obs;
   final _taskStats = <String, int>{}.obs;
 
-  // Form controllers
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final dueDateController = TextEditingController();
@@ -28,7 +26,6 @@ class TaskController extends GetxController {
   final selectedStatus = 'To-Do'.obs;
   final selectedUserId = Rxn<int>();
 
-  // Getters
   bool get isLoading => _isLoading.value;
   List<TaskModel> get tasks => _tasks;
   List<TaskModel> get filteredTasks => _filteredTasks;
@@ -90,7 +87,7 @@ class TaskController extends GetxController {
       _isLoading.value = true;
 
       final task = TaskModel(
-        id: 0, // Will be assigned by repository
+        id: 0, 
         title: titleController.text.trim(),
         description: descriptionController.text.trim(),
         dueDate: dueDateController.text.isNotEmpty
@@ -127,48 +124,47 @@ class TaskController extends GetxController {
     }
   }
 
-  Future<void> updateTask() async {
-    if (_selectedTask.value == null || !_validateTaskForm()) return;
+ Future<void> updateTask() async {
+  if (_selectedTask.value == null || !_validateTaskForm()) return;
 
-    try {
-      _isLoading.value = true;
+  try {
+    _isLoading.value = true;
 
-      final updatedTask = _selectedTask.value!.copyWith(
-        title: titleController.text.trim(),
-        description: descriptionController.text.trim(),
-        dueDate: dueDateController.text.isNotEmpty
-            ? DateTime.parse(dueDateController.text)
-            : null,
-        priority: selectedPriority.value,
-        status: selectedStatus.value,
-        assignedUserId: selectedUserId.value,
-        updatedAt: DateTime.now(),
-      );
+    final updatedTask = _selectedTask.value!.copyWith(
+      title: titleController.text.trim(),
+      description: descriptionController.text.trim(),
+      dueDate: dueDateController.text.isNotEmpty
+          ? DateTime.parse(dueDateController.text)
+          : null,
+      priority: selectedPriority.value,
+      status: selectedStatus.value,
+      assignedUserId: selectedUserId.value,
+      updatedAt: DateTime.now(),
+    );
 
-      await _taskRepository.updateTask(updatedTask);
-      
-      Get.snackbar(
-        'Success',
-        AppConstants.taskUpdatedMessage,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-      
-      _clearForm();
-      Get.back();
-      await loadTasks();
-    } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed to update task: ${e.toString().replaceAll('Exception: ', '')}',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    } finally {
-      _isLoading.value = false;
-    }
+    await _taskRepository.updateTask(updatedTask);
+    
+    Get.snackbar(
+      'Success',
+      AppConstants.taskUpdatedMessage,
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+    );
+    
+    _clearForm();
+    Get.back();
+    await loadTasks();
+  } catch (e) {
+    Get.snackbar(
+      'Error',
+      'Failed to update task: ${e.toString().replaceAll('Exception: ', '')}',
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+    );
+  } finally {
+    _isLoading.value = false;
   }
-
+}
   Future<void> deleteTask(int taskId) async {
     try {
       final result = await Get.dialog<bool>(
@@ -270,7 +266,6 @@ class TaskController extends GetxController {
   void _applyFilters() {
     var filtered = _tasks.toList();
 
-    // Apply search filter
     if (_searchQuery.value.isNotEmpty) {
       filtered = filtered.where((task) {
         return task.title.toLowerCase().contains(_searchQuery.value.toLowerCase()) ||
@@ -278,12 +273,10 @@ class TaskController extends GetxController {
       }).toList();
     }
 
-    // Apply status filter
     if (_selectedStatus.value != 'All') {
       filtered = filtered.where((task) => task.status == _selectedStatus.value).toList();
     }
 
-    // Apply priority filter
     if (_selectedPriority.value != 'All') {
       filtered = filtered.where((task) => task.priority == _selectedPriority.value).toList();
     }

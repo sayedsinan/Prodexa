@@ -19,13 +19,11 @@ class AuthRepositoryImpl implements IAuthRepository {
     try {
       final response = await _authApi.login(email: email, password: password);
       
-      // For reqres.in API, we get a token but need to fetch user data separately
+    
       final token = response['token'] as String;
-      
-      // Create a mock user or fetch from users endpoint
-      // Since reqres.in doesn't return user data with login, we'll create a basic user
+  
       final user = UserModel(
-        id: 1, // Mock ID
+        id: 1, 
         email: email,
         firstName: 'User',
         lastName: 'Name',
@@ -34,7 +32,7 @@ class AuthRepositoryImpl implements IAuthRepository {
 
       final authModel = AuthModel(token: token, user: user);
 
-      // Store auth data locally
+
       await HiveService.saveToken(token);
       await HiveService.saveUserData(user);
 
@@ -55,8 +53,7 @@ class AuthRepositoryImpl implements IAuthRepository {
       final response = await _authApi.register(email: email, password: password);
       
       final token = response['token'] as String;
-      
-      // Create user data for registration
+    
       final user = UserModel(
         id: response['id'] ?? 1,
         email: email,
@@ -67,7 +64,6 @@ class AuthRepositoryImpl implements IAuthRepository {
 
       final authModel = AuthModel(token: token, user: user);
 
-      // Store auth data locally
       await HiveService.saveToken(token);
       await HiveService.saveUserData(user);
 

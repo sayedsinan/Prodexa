@@ -9,7 +9,8 @@ class AppConstants {
   static const String usersEndpoint = '/users';
   static const String todosEndpoint = '/todos';
 
-  static const String apiKey = 'reqres-free-v1';
+  // Remove the apiKey - reqres.in doesn't need it
+  // static const String apiKey = 'reqres-free-v1';
   
   // Local Storage Keys
   static const String tokenKey = 'auth_token';
@@ -34,8 +35,7 @@ class AppConstants {
   // Task status
   static const List<String> taskStatuses = ['To-Do', 'In Progress', 'Done'];
   
-  // Default email for registration
-  static const String defaultEmail = 'eve.holt@reqres.in';
+  static const String defaultEmail = 'eve.holt@reqres.in';  
   
   // Validation messages
   static const String requiredFieldError = 'This field is required';
@@ -53,4 +53,5 @@ class AppConstants {
   static const String networkErrorMessage = 'Network error. Please check your connection.';
   static const String serverErrorMessage = 'Server error. Please try again later.';
   static const String unknownErrorMessage = 'An unknown error occurred.';
+  static const String authenticationFailedMessage = 'Authentication failed. Please check your credentials.';
 }

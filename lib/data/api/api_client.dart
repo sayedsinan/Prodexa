@@ -6,6 +6,7 @@ import '../../core/constants.dart';
 class ApiClient {
   late final Dio _dio;
   final Logger _logger = Logger();
+  String? _authToken;
 
   ApiClient({String? baseUrl}) {
     _dio = Dio(
@@ -15,7 +16,6 @@ class ApiClient {
         receiveTimeout: const Duration(seconds: 30),
         sendTimeout: const Duration(seconds: 30),
         headers: {
-          'Authorization': 'Bearer ${AppConstants.apiKey}', // 👈 API KEY HERE
           'Content-Type': 'application/json',
         },
       ),
@@ -24,6 +24,11 @@ class ApiClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
+  
+          if (_authToken != null && _authToken!.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $_authToken';
+          }
+          
           _logger.d('➡️ Request: ${options.method} ${options.path}');
           _logger.d('Headers: ${options.headers}');
           _logger.d('Data: ${options.data}');
@@ -35,87 +40,93 @@ class ApiClient {
         },
         onError: (error, handler) {
           _logger.e('❌ Error: ${error.response?.statusCode} ${error.message}');
+          _logger.e('Response data: ${error.response?.data}');
           handler.next(error);
         },
       ),
     );
   }
 
-  /// Dynamically update auth token
-  void setAuthToken(String token) {
-    _dio.options.headers['Authorization'] = 'Bearer $token';
+  Future<Response> postAuth(String path, {dynamic data}) async {
+    await _ensureNetwork(path);
+    try {
+    
+      final authDio = Dio(
+        BaseOptions(
+          baseUrl: _dio.options.baseUrl,
+          connectTimeout: _dio.options.connectTimeout,
+          receiveTimeout: _dio.options.receiveTimeout,
+          sendTimeout: _dio.options.sendTimeout,
+          headers: {
+            'Content-Type': 'application/json',
+       
+          },
+        ),
+      );
+
+      _logger.d('🔐 Auth Request: POST $path');
+      _logger.d('🔐 Auth Headers: {Content-Type: application/json}');
+      _logger.d('🔐 Auth Data: $data');
+
+      final response = await authDio.post(path, data: data);
+      
+      _logger.d('🔐 Auth Response: ${response.statusCode} ${response.data}');
+      return response;
+    } catch (e) {
+      _logger.e('🔐 Auth Error: $e');
+      throw _handleError(e);
+    }
   }
 
-  /// Connectivity check
+  void setAuthToken(String token) {
+    _authToken = token;
+  }
+
+  void clearAuthToken() {
+    _authToken = null;
+  }
+
   Future<bool> hasNetworkConnection() async {
     final connectivityResult = await Connectivity().checkConnectivity();
     return connectivityResult != ConnectivityResult.none;
   }
 
-  /// GET
-  Future<Response> get(
-    String path, {
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-  }) async {
+  Future<Response> get(String path, {Map<String, dynamic>? queryParameters, Options? options}) async {
     await _ensureNetwork(path);
     try {
-      return await _dio.get(path,
-          queryParameters: queryParameters, options: options);
+      return await _dio.get(path, queryParameters: queryParameters, options: options);
     } catch (e) {
       throw _handleError(e);
     }
   }
 
-  /// POST
-  Future<Response> post(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-  }) async {
+  Future<Response> post(String path, {dynamic data, Map<String, dynamic>? queryParameters, Options? options}) async {
     await _ensureNetwork(path);
     try {
-      return await _dio.post(path,
-          data: data, queryParameters: queryParameters, options: options);
+      return await _dio.post(path, data: data, queryParameters: queryParameters, options: options);
     } catch (e) {
       throw _handleError(e);
     }
   }
 
-  /// PUT
-  Future<Response> put(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-  }) async {
+  Future<Response> put(String path, {dynamic data, Map<String, dynamic>? queryParameters, Options? options}) async {
     await _ensureNetwork(path);
     try {
-      return await _dio.put(path,
-          data: data, queryParameters: queryParameters, options: options);
+      return await _dio.put(path, data: data, queryParameters: queryParameters, options: options);
     } catch (e) {
       throw _handleError(e);
     }
   }
 
-  /// DELETE
-  Future<Response> delete(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-  }) async {
+  Future<Response> delete(String path, {dynamic data, Map<String, dynamic>? queryParameters, Options? options}) async {
     await _ensureNetwork(path);
     try {
-      return await _dio.delete(path,
-          data: data, queryParameters: queryParameters, options: options);
+      return await _dio.delete(path, data: data, queryParameters: queryParameters, options: options);
     } catch (e) {
       throw _handleError(e);
     }
   }
 
-  /// Ensure network before request
   Future<void> _ensureNetwork(String path) async {
     if (!await hasNetworkConnection()) {
       throw DioException(
@@ -126,7 +137,6 @@ class ApiClient {
     }
   }
 
-  /// Centralized error handling
   Exception _handleError(dynamic error) {
     if (error is DioException) {
       switch (error.type) {
@@ -142,6 +152,8 @@ class ApiClient {
           return Exception('HTTP $statusCode: $message');
         case DioExceptionType.cancel:
           return Exception('⚠️ Request was cancelled');
+        case DioExceptionType.connectionError:
+          return Exception('🔌 ${error.message ?? AppConstants.networkErrorMessage}');
         default:
           return Exception(AppConstants.unknownErrorMessage);
       }

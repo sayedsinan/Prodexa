@@ -47,12 +47,7 @@ class AppRoutes {
       ],
       transition: Transition.fadeIn,
     ),
-    // GetPage(
-    //   name: taskDetail,
-    //   page: () => const Task(),
-    //   binding: TaskBinding(),
-    //   transition: Transition.rightToLeft,
-    // ),
+  
     GetPage(
       name: taskForm,
       page: () => const TaskFormScreen(),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -22,14 +21,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _initialize() async {
-    // Wait for animations
     await Future.delayed(const Duration(seconds: 2));
-    
-    // Check authentication status
     final authController = Get.find<AuthController>();
     await authController.checkAuthStatus();
-    
-    // Navigate based on auth status
     if (authController.isLoggedIn) {
       Get.offAllNamed(AppRoutes.taskList);
     } else {
@@ -45,15 +39,13 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.task_alt,
               size: 100,
               color: Colors.white,
             ).animate().scale(duration: 600.ms).fadeIn(),
-            
             const SizedBox(height: 24),
-            
-            Text(
+            const Text(
               'Task Manager',
               style: const TextStyle(
                 fontSize: 32,
@@ -61,19 +53,15 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: Colors.white,
               ),
             ).animate().slideY(begin: 1, duration: 600.ms).fadeIn(),
-            
             const SizedBox(height: 16),
-            
-            Text(
+            const Text(
               'Organize your tasks efficiently',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 color: Colors.white70,
               ),
             ).animate().slideY(begin: 1, duration: 800.ms).fadeIn(),
-            
             const SizedBox(height: 48),
-            
             const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ).animate().fadeIn(delay: 1000.ms),

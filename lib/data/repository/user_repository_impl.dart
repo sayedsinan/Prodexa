@@ -1,4 +1,3 @@
-// data/repository/user_repository_impl.dart
 import 'package:logger/logger.dart';
 import '../../domain/repository/i_user_repository.dart';
 import '../../domain/models/user_model.dart';
@@ -68,7 +67,7 @@ class UserRepositoryImpl implements IUserRepository {
         }
       }
 
-      // Fallback to local
+    
       final localUser = HiveService.getUser(id);
       if (localUser != null) {
         return localUser;

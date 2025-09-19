@@ -1,5 +1,3 @@
-
-// presentation/widgets/custom_input.dart
 import 'package:flutter/material.dart';
 import '../../core/constants.dart';
 

@@ -1,4 +1,3 @@
-// presentation/widgets/task_card.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../domain/models/task_model.dart';
@@ -40,7 +39,7 @@ class TaskCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header Row
+
               Row(
                 children: [
                   Expanded(
@@ -62,8 +61,7 @@ class TaskCard extends StatelessWidget {
               ),
               
               const SizedBox(height: 8),
-              
-              // Description
+            
               if (task.description.isNotEmpty) ...[
                 Text(
                   task.description,
@@ -75,8 +73,7 @@ class TaskCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
               ],
-              
-              // Status and Due Date Row
+            
               Row(
                 children: [
                   _buildStatusChip(),
@@ -86,8 +83,6 @@ class TaskCard extends StatelessWidget {
               ),
               
               const SizedBox(height: 12),
-              
-              // Bottom Row with assigned user and actions
               Row(
                 children: [
                   if (assignedUserName != null) ...[
@@ -109,7 +104,7 @@ class TaskCard extends StatelessWidget {
                   ] else
                     const Spacer(),
                   
-                  // Action Buttons
+             
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
